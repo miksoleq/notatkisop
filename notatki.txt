@@ -16,3 +16,81 @@ wynik:
 bo:
 H  e  l  l  o  \n  W ...
 0  1  2  3  4  5
+
+//
+
+sscanf to funkcja w C służąca do parsowania danych ze stringa, czyli odczytywania 
+wartości z tekstu w określonym formacie. Można ją traktować jako „scanf działający 
+na stringu zamiast na wejściu standardowym”.
+
+int sscanf(const char *str, const char *format, ...);
+
+str – łańcuch znaków, który chcesz odczytać
+
+format – format, wg którego sscanf interpretuje tekst (np. %d, %f, %s)
+
+... – adresy zmiennych, do których mają trafić odczytane wartości
+
+Funkcja zwraca liczbę poprawnie odczytanych elementów.
+
+//
+
+atoi w C służy do konwersji łańcucha znaków (char*) na liczbę całkowitą (int). 
+Nazwa pochodzi od ASCII to integer.
+
+int atoi(const char *str);
+
+str – wskaźnik na łańcuch znaków, który ma zostać przekonwertowany
+
+Zwraca liczbę typu int
+
+//
+
+strtol (string to long) w C to bezpieczniejsza funkcja do konwersji stringa 
+na liczbę całkowitą w porównaniu do atoi, bo pozwala sprawdzać błędy i obsługiwać 
+różne systemy liczbowe.
+
+long strtol(const char *str, char **endptr, int base);
+
+str – wskaźnik na łańcuch znaków do konwersji
+
+endptr – wskaźnik na wskaźnik; po wywołaniu będzie wskazywać pierwszy znak po odczytanej liczbie
+
+base – podstawa liczby (np. 10 = dziesiętna, 16 = szesnastkowa, 8 = ósemkowa, 0 = auto-detekcja)
+
+Zwraca: liczbę typu long
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    char str[] = "123abc";
+    char *ptr;
+    long x = strtol(str, &ptr, 10);
+
+    printf("Odczytano: %ld\n", x);
+    printf("Reszta stringa: %s\n", ptr);
+
+    return 0;
+}
+Odczytano: 123
+Reszta stringa: abc
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    char str[] = "xyz";
+    char *ptr;
+    long x = strtol(str, &ptr, 10);
+
+    if (ptr == str) {
+        printf("Nie znaleziono liczby!\n");
+    } else {
+        printf("Odczytano: %ld\n", x);
+    }
+
+    return 0;
+}
+
+Nie znaleziono liczby!
