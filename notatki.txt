@@ -1,0 +1,18 @@
+size_t strcspn(const char *str, const char *reject);
+
+strcspn() zwraca długość początkowego fragmentu łańcucha str, który nie zawiera żadnego 
+znaku z łańcucha reject.
+
+Innymi słowy — szuka pierwszego wystąpienia któregokolwiek ze znaków z reject w str
+i zwraca indeks (pozycję) tego znaku.
+
+char text[] = "Hello\nWorld";
+size_t i = strcspn(text, "\n");
+printf("%zu\n", i);
+
+wynik:
+5
+
+bo:
+H  e  l  l  o  \n  W ...
+0  1  2  3  4  5
