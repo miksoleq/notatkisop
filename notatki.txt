@@ -112,4 +112,16 @@ void copy_file(FILE *s1, FILE *s2) {
         ERR("fread");
 }
 
-Nie znaleziono liczby!
+#include <stdio.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+int main()
+{
+    char buffer[100]="\nsiema siema o tej porze kazdy wypic moze";
+    int fd = open("elo.txt", O_APPEND | O_RDWR);
+    write(fd, buffer, 100);
+    close(fd);
+    return EXIT_SUCCESS;
+}
