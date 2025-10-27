@@ -93,4 +93,23 @@ int main() {
     return 0;
 }
 
+
+void copy_file(FILE *s1, FILE *s2) {
+    char buffer[4096];
+    size_t n;
+
+    // Ustawiamy wskaźnik na początek s1
+    if (fseek(s1, 0, SEEK_SET))
+        ERR("fseek");
+
+    // Czytamy z s1 i zapisujemy do s2
+    while ((n = fread(buffer, 1, sizeof(buffer), s1)) > 0) {
+        if (fwrite(buffer, 1, n, s2) != n)
+            ERR("fwrite");
+    }
+
+    if (ferror(s1))
+        ERR("fread");
+}
+
 Nie znaleziono liczby!
