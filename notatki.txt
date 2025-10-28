@@ -125,3 +125,41 @@ int main()
     close(fd);
     return EXIT_SUCCESS;
 }
+
+
+char* strchr( char* str, int chr ); - pierwsze wystapienie znaku
+
+
+char* strrchr( char* str, int chr ); - ostatnie wystapienie znaku.
+
+
+DYNAMICZNA TABLCA !!!!!!!
+!!!!!!
+!!!!!!!
+char **paths = NULL;
+int npaths = 0;
+
+while((c = getopt(argc, argv, "p:e:")) != -1) {
+    if(c == 'p') {
+        npaths++;
+        paths = realloc(paths, npaths * sizeof(char*));
+        if(!paths) ERR("realloc");
+        paths[npaths - 1] = optarg; // wskaźnik na argument
+    }
+}
+
+
+int cap = 10;
+char **paths = malloc(cap * sizeof(char*));
+int npaths = 0;
+
+while((c = getopt(argc, argv, "p:e:")) != -1) {
+    if(c == 'p') {
+        if(npaths >= cap) {
+            cap *= 2;
+            paths = realloc(paths, cap * sizeof(char*));
+            if(!paths) ERR("realloc");
+        }
+        paths[npaths++] = optarg;
+    }
+}
