@@ -10,14 +10,21 @@
 
 #define MAX_BUFFER 256
 
-void scan_dir(const char* path,const char * ext)
+void scan_dir(const char* path,const char * ext,FILE* fptr)
 {
     DIR* dirp;
     struct dirent *dp;
     struct stat filestat;
     if((dirp=opendir("."))==NULL)
         ERR("opendir");
-    fprintf(stdout,"path: %s\n", path);
+    if(fptr)
+    {
+        fprintf(fptr,"path: %s\n", path);
+    }
+    else {
+        fprintf(stdout,"path: %s\n", path);
+    }
+    
     do {
     errno=0;
     if((dp=readdir(dirp))!=NULL)
@@ -30,7 +37,14 @@ void scan_dir(const char* path,const char * ext)
             if(!dot || strcmp(dot+1,ext)!=0)
                 continue;
         }
-        fprintf(stdout, "%s %lu\n",dp->d_name,filestat.st_size);
+        if(fptr)
+        {
+           fprintf(fptr, "%s %lu\n",dp->d_name,filestat.st_size);
+        }
+        else {
+            fprintf(stdout, "%s %lu\n",dp->d_name,filestat.st_size);
+        }
+        
     }
     }while (dp!=NULL);
 
@@ -43,12 +57,14 @@ void scan_dir(const char* path,const char * ext)
 
 int main(int argc, char** argv)
 {
-    int c;
+    int c,o_flag=0;
     char *path;
     char **paths = NULL;
     int npaths=0;
     char *extention=NULL;
-    while((c=getopt(argc, argv, "p:e:"))!= -1)
+    char *output=NULL;
+    FILE *fptr=NULL;
+    while((c=getopt(argc, argv, "p:e:o:"))!= -1)
     {
         switch (c) 
         {
@@ -61,9 +77,21 @@ int main(int argc, char** argv)
             paths[npaths]=optarg;
             npaths++;
             break;
+            case 'o':
+            o_flag++;
+            if(o_flag>1)
+                ERR("o_flag");
+            output=optarg;
+            break;
             default:
             break;
         }
+    }
+    if(output)
+    {
+        fptr=fopen(output, "a");
+        if(!fptr)
+            ERR("fopen");
     }
     for(int i=0;i<npaths;i++)
     {
@@ -72,11 +100,13 @@ int main(int argc, char** argv)
                 ERR("getcwd");
             if(chdir(paths[i]))
                 ERR("chdir");
-            scan_dir(paths[i],extention);
+            scan_dir(paths[i],extention,fptr);
             if(chdir(path))
                 ERR("chdir");
         free(path);    
     }
     free(paths);
-    
+    if(fptr && fclose(fptr))
+        ERR("fclose");
+    return EXIT_SUCCESS;
 }
