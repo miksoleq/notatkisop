@@ -64,7 +64,7 @@ int main(int argc, char** argv)
     char *extention=NULL;
     char *output=NULL;
     FILE *fptr=NULL;
-    while((c=getopt(argc, argv, "p:e:o:"))!= -1)
+    while((c=getopt(argc, argv, "p:e:o"))!= -1)
     {
         switch (c) 
         {
@@ -81,12 +81,13 @@ int main(int argc, char** argv)
             o_flag++;
             if(o_flag>1)
                 ERR("o_flag");
-            output=optarg;
+            output=getenv("L1_OUTPUTFILE");
             break;
             default:
             break;
         }
     }
+
     if(output)
     {
         fptr=fopen(output, "a");
