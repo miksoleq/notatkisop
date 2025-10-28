@@ -163,3 +163,27 @@ while((c = getopt(argc, argv, "p:e:")) != -1) {
         paths[npaths++] = optarg;
     }
 }
+
+
+char *kopia = strdup("tekst");
+
+to strdup():
+
+Oblicza długość łańcucha "tekst".
+
+Alokuje w pamięci (malloc) dokładnie tyle bajtów, ile potrzeba na:
+
+znaki łańcucha,
+
+plus jeden bajt na kończące '\0'.
+
+Kopiuje cały tekst do nowo zaalokowanego miejsca.
+
+Zwraca wskaźnik do tej nowej kopii
+
+char *s1 = "Hello";
+char *s2 = strdup(s1);
+
+printf("%s\n", s2); // "Hello"
+
+free(s2); // trzeba zwolnić pamięć!
