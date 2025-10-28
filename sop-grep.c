@@ -40,7 +40,8 @@ int main(int argc, char** argv)
             if (strstr(line, pattern))
             {
                 printf("%d:%s", x, line);  // getline() should return null terminated data
-                fprintf(fptr, "%d:%s", x, line);
+                if(fptr)
+                    fprintf(fptr, "%d:%s", x, line);
             }
             x++;
         }
@@ -52,7 +53,8 @@ int main(int argc, char** argv)
             if (strstr(line, pattern))
             {
                 printf("%s", line);  // getline() should return null terminated data
-                fprintf(fptr, "%s", line);
+                if(fptr)
+                    fprintf(fptr, "%s", line);
             }
         }
     }
